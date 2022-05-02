@@ -1,4 +1,4 @@
-import { act } from "react-dom/test-utils"
+
 import { Reducer } from "redux"
 import { InitState, ItemAction, ItemActionTypes } from "./types"
 
@@ -15,6 +15,12 @@ export const itemReducer = (state=initState,action:ItemAction):InitState=>{
                 ...state, stages:action.payload
             }
         default:return state
+    
+        case ItemActionTypes.SET_BOARD_AFTER_DND:
+            return{
+                ...state,stages:action.payload
+            }
+
     }
 
 

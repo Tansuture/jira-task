@@ -1,7 +1,7 @@
  export enum ItemActionTypes{
     FETCH_ITEMS ='FETCH_ITEMS',
-    FETCH_STAGE='FETCH_STAGE',
-    FETCH_STAGE_NAME = 'FETCH_STAGE_NAME'
+ 
+    SET_BOARD_AFTER_DND='SET_BOARD_AFTER_DND'
  }
  
  export interface InitState{
@@ -27,8 +27,13 @@ export interface TaskState{
     taskTypeId: number,
     taskTypeName: string
 }
+
 type SetItemAction = {
     type:ItemActionTypes.FETCH_ITEMS,
     payload: StageItem[]
 }
-export type ItemAction= SetItemAction 
+type DndHappenedAction = {
+    type:ItemActionTypes.SET_BOARD_AFTER_DND,
+    payload: StageItem[]
+}
+export type ItemAction = SetItemAction | DndHappenedAction

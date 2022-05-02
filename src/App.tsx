@@ -5,7 +5,8 @@ import {useItemActions}from './store/useDispatch'
 
 import { useSelector } from 'react-redux';
 import { IState } from './store/store';
-import Items from './components/Items';
+
+import ItemsContainer from './components/ItemsContainer';
 
 function App(){
  const  {getItems}=useItemActions()
@@ -20,10 +21,10 @@ function App(){
  
   return (
     <div className="App">
-      <Items  stages={stages}/>
+    <ItemsContainer stages={stages}/>
 
     </div>
-  );
+  )
 }
 
 export default App;

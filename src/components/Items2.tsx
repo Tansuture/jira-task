@@ -1,7 +1,8 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect ,DragEvent, useState } from 'react';
 import { StageItem, TaskState} from '../store/types'
 import Grid from '@mui/material/Grid';
 import {styled} from "@mui/material";
+
 
 
 
@@ -12,13 +13,7 @@ text-transform:lowerCase;
 margin-left:10px;
 font-size: 16px;
 `
-const Span = styled('div')`
-width: 70px;
-margin-left:5px;
-height: 22px;
-background: #27AE60;
-border-radius: 4px;
-`
+
 const Time = styled('p')`
 
 margin-left:10px;
@@ -37,24 +32,48 @@ border-top: 3px solid grey;
 const Length = styled('span')`
 background: #E0E0E0;
 border-radius: 10px;
-margin-left:5px;
+margin-left:10px;
+
+`
+const Span = styled('div')`
+width: 90px;
+background: #27AE60;
+border-radius: 4px;
+margin-left:10px;
+text-align:center ;
+
+`
+const Blue = styled('div')`
+width: 90px;
+background-color:blue;
+border-radius: 4px;
+margin-left:10px;
+text-align:center ;
 
 `
 type Props ={
-    stages:StageItem[]
+    boards:StageItem[],
+    dragHandler:(e:DragEvent<HTMLDivElement>,task:TaskState,board:StageItem)=>void
+    dragStart:(e:DragEvent<HTMLDivElement>,task:TaskState,board:StageItem)=>void
+    dragOver:(e:DragEvent<HTMLDivElement>)=>void
+    dragLeave:(e:DragEvent<HTMLDivElement>)=>void
+    dragEnd:(e:DragEvent<HTMLDivElement>)=>void
+
 }
-const Items:FC<Props> =({stages})=>{
-  
-    // const items = stages.map((item)=>item.items)
-    // const stage = stages.map((item)=>item.stage)
+const Items2:FC<Props> =({boards,dragHandler,dragStart,dragOver,dragEnd,dragLeave})=>{
+
+
 return(
     <>
-    <h1 style={{textAlign:'center'}}> Задачи Нурманова Бибижан</h1>
-     <Grid sx={{ flexGrow: 1 ,marginTop:10 }} container spacing={3}>
+  
+     <Grid sx={{ flexGrow: 1 ,marginTop:4 }} container spacing={3}>
       <Grid item xs={12}>
         <Grid container justifyContent="center" spacing={5}>
-          {stages.map((value,index) => (
-            <Grid key={index} item>
+          {boards.map((value,index) => (
+             
+                
+                
+            <Grid  key={index} item>
        
                 <Title>
                 {value.stageName} 
@@ -66,7 +85,15 @@ return(
                 <br></br>
                 <br></br>
                 {value.items.map(task=>
+                <div  className='item'
+                onDragOver={(e)=>dragOver(e)}
+                onDragStart={(e)=>dragStart(e,task,value)}
+                onDragLeave={(e)=>dragLeave(e)}
+                onDragEnd={(e)=>dragEnd(e)}
+                onDrop={(e)=>dragHandler(e,task,value)}
+                draggable={true}>
               <Paper 
+            
                 sx={{
                   height: 100,
                   width: 200,
@@ -77,33 +104,37 @@ return(
                     theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
                 }}
 
-               
               >  
                 <Time>{new Date(task.createTimestamp).toLocaleString()}</Time>
-                <Title>
+                <Title  >
                     {
                      task.clientName
                     }
                 </Title> 
-                <Span>
+                {task.taskTypeName == 'Встреча'? <Span>{task.taskTypeName}</Span> :<Blue>{task.taskTypeName}</Blue>}
+                {/* <Span >
                 <Title>
                     {
                      task.taskTypeName
                     }
                 </Title> 
-                </Span>
-              </Paper>)}
+                </Span> */}
+              </Paper>
+              </div>
+              )}
             </Grid>
+              
           ))}
         </Grid>
+        
       </Grid>
     
           
            
        
     </Grid>
-  );
+  
     </>
 )
 }
-export default Items
+export default Items2
